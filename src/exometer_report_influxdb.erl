@@ -124,15 +124,18 @@ exometer_report(_Metric, _DataPoint, _Extra, _Value,
     {ok, State};
 exometer_report(Metric, DataPoint, _Extra, Value,
                 #state{metrics = Metrics} = State) ->
-    case maps:get(Metric, Metrics, not_found) of
-        {MetricName, Tags} ->
-            maybe_send(Metric, MetricName, Tags,
-                       maps:from_list([{DataPoint, Value}]), State);
-        Error ->
-            ?warning("InfluxDB reporter got trouble when looking ~p metric's tag: ~p",
-                     [Metric, Error]),
-            Error
-    end.
+    ?debug("Looking at metric ~p with datapoint: ~p tag: ~p VALUE: ~p",
+                     [Metric, DataPoint, Metrics, Value]),
+    maybe_send(DataPoint, Metric, Metrics, maps:from_list([{DataPoint, Value}]), State).
+    % case maps:get(Metrics, Metric, not_found) of
+    %     {MetricName, Tags} ->
+    %         maybe_send(Metric, MetricName, Tags,
+    %                    maps:from_list([{DataPoint, Value}]), State);
+    %     Error ->
+    %         ?warning("InfluxDB reporter got trouble when looking ~p metric's tag: ~p",
+    %                  [Metric, Error]),
+    %         Error
+    % end.
 
 -spec exometer_subscribe(exometer_report:metric(),
                          exometer_report:datapoint(),
