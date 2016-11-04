@@ -124,8 +124,8 @@ exometer_report(_Metric, _DataPoint, _Extra, _Value,
     {ok, State};
 exometer_report(Metric, DataPoint, _Extra, Value,
                 #state{metrics = Metrics} = State) ->
-    ?warning("Looking at metric ~p with datapoint: ~p tag: ~p VALUE: ~p",
-                     [Metric, DataPoint, Metrics, Value]),
+    % ?warning("Looking at metric ~p with datapoint: ~p tag: ~p VALUE: ~p",
+    %                  [Metric, DataPoint, Metrics, Value]),
     maybe_send(DataPoint, Metric, Metrics, maps:from_list([{DataPoint, Value}]), State).
     % case maps:get(Metrics, Metric, not_found) of
     %     {MetricName, Tags} ->
