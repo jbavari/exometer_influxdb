@@ -123,10 +123,11 @@ exometer_report(_Metric, _DataPoint, _Extra, _Value,
     ?info("InfluxDB reporter isn't connected and will reconnect."),
     {ok, State};
 exometer_report(Metric, DataPoint, _Extra, Value,
-                #state{metrics = Metrics} = State) ->
-    % ?warning("Looking at metric ~p with datapoint: ~p tag: ~p VALUE: ~p",
-    %                  [Metric, DataPoint, Metrics, Value]),
-    maybe_send(DataPoint, Metric, Metrics, maps:from_list([{DataPoint, Value}]), State).
+                #state{metrics = Metrics, tags = Tags} = State) ->
+    % Looking at metric [:erlang, :memory] with datapoint: :atom metrics: %{} VALUE: 918665, EXTRA: :undefined
+    % ?warning("Looking at metric ~p with datapoint: ~p metrics: ~p VALUE: ~p",
+                     % [Metric, DataPoint, Metrics, Value]),
+    maybe_send(DataPoint, Metric, Tags, maps:from_list([{DataPoint, Value}]), State).
     % case maps:get(Metrics, Metric, not_found) of
     %     {MetricName, Tags} ->
     %         maybe_send(Metric, MetricName, Tags,
